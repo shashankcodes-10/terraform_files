@@ -4,3 +4,5 @@
 *.tfstate.*
 crash.log
 *.tfvars
+keypair.pem
+keypair.pem.pub
