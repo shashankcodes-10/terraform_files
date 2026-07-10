@@ -30,12 +30,19 @@ resource "aws_security_group" "securitygroup"{
 
 resource "aws_instance" "ec2-instance"{
     # count meta-keyword (it will make 2 instance with same name)
+    
     # count = 2
+
+    # for_each meta-keyword (by this we can have different name of instance)
+    
     for_each = tomap({
         first-instance = "t3.micro"
         secone_instance = "t3.small"
         third_instance = "t3.micro"
     })  
+    # depends_on meta-keyword (by this we write the resource that we want to be created before creating instance or other resource)
+    
+    depends_on=[aws_security_group.securitygroup,aws_key_pair.keypair]
     key_name = aws_key_pair.keypair.key_name
     security_groups = [aws_security_group.securitygroup.name]
     ami = "ami-0b6d9d3d33ba97d99"
