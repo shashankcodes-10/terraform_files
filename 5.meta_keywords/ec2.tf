@@ -30,16 +30,21 @@ resource "aws_security_group" "securitygroup"{
 
 resource "aws_instance" "ec2-instance"{
     # count meta-keyword (it will make 2 instance with same name)
-    count = 2  
+    # count = 2
+    for_each = tomap({
+        first-instance = "t3.micro"
+        secone_instance = "t3.small"
+        third_instance = "t3.micro"
+    })  
     key_name = aws_key_pair.keypair.key_name
     security_groups = [aws_security_group.securitygroup.name]
     ami = "ami-0b6d9d3d33ba97d99"
-    instance_type = "t3.micro"
+    instance_type = each.value
     root_block_device{
         volume_size = 10
         volume_type = "gp3"
     }
     tags = {
-        Name = "meta-keywords-ec2"
+        Name = each.key
     }
 }
